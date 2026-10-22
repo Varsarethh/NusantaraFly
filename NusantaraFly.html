@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NusantaraFly - Temukan Perjalanan yang Berarti</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-blue: #0b2545;
+            --accent-blue: #134074;
+            --bright-blue: #0077b6;
+            --orange-tvlk: #ff5e1f;
+            --bg-gray: #f4f6f9;
+            --text-dark: #1c1c1c;
+            --text-gray: #687176;
+            --border-color: #e0e0e0;
+            --compare-color: #ffc107;
+            --swap-color: #17a2b8;
+            --success-color: #28a745;
+        }
+
+        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; }
+        body { background-color: var(--bg-gray); color: var(--text-dark); overflow-x: hidden; }
+
+        /* HEADER */
+        header { background-color: white; padding: 15px 8%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
+        .logo-area { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 700; color: var(--primary-blue); }
+        .logo-area i { color: var(--bright-blue); font-size: 22px; }
+        nav ul { list-style: none; display: flex; gap: 30px; }
+        nav ul li a { text-decoration: none; color: var(--text-dark); font-size: 14px; font-weight: 500; }
+        nav ul li a:hover { color: var(--bright-blue); }
+        .btn-top-cari { background: #e8f1fc; color: var(--bright-blue); border: none; padding: 8px 18px; border-radius: 20px; font-weight: 600; font-size: 13px; cursor: pointer; }
+
+        /* HERO SECTION */
+        .hero { background-color: var(--primary-blue); padding: 50px 8% 120px 8%; color: white; display: flex; justify-content: space-between; align-items: center; position: relative; overflow: hidden; }
+        .hero-content { max-width: 600px; z-index: 2; }
+        .badge-temukan { background: rgba(255,255,255,0.1); padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; color: #90e0ef; }
+        .hero h1 { font-size: 38px; font-weight: 700; line-height: 1.2; margin-bottom: 15px; }
+        .hero h1 span { color: #48cae4; }
+        .hero p { font-size: 14px; opacity: 0.85; margin-bottom: 20px; line-height: 1.6; }
+        .hero-features { display: flex; gap: 20px; font-size: 12px; opacity: 0.9; }
+        .hero-features i { color: #48cae4; }
+
+        .hero-illustration { position: relative; width: 280px; height: 200px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, rgba(27,54,93,1) 0%, rgba(11,37,69,0) 70%); }
+        .hero-plane-icon { width: 70px; height: 70px; background: var(--bright-blue); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; color: white; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .floating-badge { position: absolute; background: white; color: var(--text-dark); padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; box-shadow: 0 5px 15px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 6px; }
+        .badge-left { bottom: 10px; left: -20px; }
+        .badge-right { top: 10px; right: -20px; }
+        .floating-badge i { color: var(--bright-blue); }
+
+        /* SEARCH CONTAINER */
+        .search-container { max-width: 1100px; margin: -75px auto 30px auto; background: white; padding: 30px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); position: relative; z-index: 10; }
+        .search-container-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .sub-mulai { font-size: 10px; font-weight: 700; color: var(--text-gray); letter-spacing: 1px; }
+        .search-container-header h3 { font-size: 18px; font-weight: 700; color: var(--primary-blue); }
+        .badge-sesuai { background: #f0f7ff; color: var(--bright-blue); padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+
+        .search-grid { display: grid; grid-template-columns: 2fr 1.5fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .input-group { position: relative; border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 15px 10px 45px; background: #fafbfc; }
+        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--bright-blue); font-size: 16px; }
+        .input-group label { display: block; font-size: 11px; color: var(--text-gray); font-weight: 500; }
+        .input-group input, .input-group select { border: none; width: 100%; font-size: 13px; font-weight: 600; color: var(--text-dark); outline: none; background: transparent; }
+
+        .search-action-row { display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-color); padding-top: 15px; }
+        .btn-main { padding: 10px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 13px; transition: 0.2s; }
+        .btn-cari { background: var(--bright-blue); color: white; }
+        .btn-cari:hover { background: #005f73; }
+        .btn-reset { background: #f2f3f3; color: var(--text-gray); }
+
+        /* MAIN CONTENT & TICKET CARD */
+        .main-wrapper { max-width: 1100px; margin: 0 auto; padding: 0 0 40px 0; }
+        .content-grid { display: flex; gap: 25px; align-items: flex-start; }
+        .ticket-list-section { flex: 1.6; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .section-header h2 { font-size: 16px; font-weight: 600; }
+
+        .card-container { display: flex; flex-direction: column; gap: 15px; }
+        .ticket-card { background: white; border-radius: 12px; border: 2px solid transparent; box-shadow: 0 4px 12px rgba(0,0,0,0.03); padding: 18px; display: grid; grid-template-columns: 110px 1fr 120px; align-items: center; gap: 15px; transition: all 0.3s ease; position: relative; }
+
+        .ticket-card.state-comparing { border-color: var(--compare-color); background: #fffdf5; transform: scale(1.01); }
+        .ticket-card.state-swapping { border-color: var(--swap-color); background: #f0fbff; }
+        .ticket-card.state-match { border-color: var(--success-color); background: #f4fff6; transform: scale(1.01); }
+        .ticket-card.state-mismatch { opacity: 0.3; filter: grayscale(50%); }
+
+        .maskapai-info { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 5px; }
+        .maskapai-logo { width: 38px; height: 38px; background: #e8f4ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--bright-blue); font-weight: 700; font-size: 15px; }
+        .maskapai-name { font-size: 12px; font-weight: 600; }
+
+        .route-info { display: flex; align-items: center; justify-content: center; gap: 12px; }
+        .time-block { text-align: center; }
+        .time { font-size: 15px; font-weight: 600; }
+        .city { font-size: 11px; color: var(--text-gray); }
+        .route-path { flex: 1; text-align: center; position: relative; color: #ddd; }
+        .route-path::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: #eee; z-index: 1; }
+        .route-path i { position: relative; z-index: 2; background: white; padding: 0 5px; color: var(--bright-blue); font-size: 12px; }
+
+        .price-info { text-align: right; border-left: 1px solid var(--border-color); padding-left: 15px; }
+        .price { color: var(--orange-tvlk); font-size: 16px; font-weight: 700; }
+        .btn-pilih { background: var(--orange-tvlk); color: white; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 600; font-size: 12px; margin-top: 5px; cursor: pointer; width: 100%; }
+
+        /* LOG TERMINAL */
+        .log-section { flex: 1; background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid var(--border-color); }
+        .log-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
+        .log-header h3 { font-size: 13px; font-weight: 600; color: var(--primary-blue); display: flex; align-items: center; gap: 8px; }
+        .btn-clear-log { background: none; border: none; color: var(--bright-blue); font-size: 11px; cursor: pointer; font-weight: 600; }
+
+        .timeline-list { height: 420px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 5px; }
+        .timeline-item { background: #f8f9fa; border-left: 4px solid var(--border-color); padding: 8px 12px; border-radius: 0 6px 6px 0; font-size: 11px; }
+        .timeline-item.type-compare { border-left-color: var(--compare-color); background: #fffdf5; }
+        .timeline-item.type-swap { border-left-color: var(--swap-color); background: #f0fbff; }
+        .timeline-item.type-match { border-left-color: var(--success-color); background: #f4fff6; }
+        .timeline-title { font-weight: 600; margin-bottom: 2px; display: flex; justify-content: space-between; }
+        .timeline-desc { color: var(--text-gray); }
+        .timeline-time { font-size: 9px; color: #aaa; font-family: monospace; }
+
+        @media (max-width: 900px) {
+            .hero { flex-direction: column; gap: 30px; text-align: center; }
+            .hero-illustration { display: none; }
+            .search-grid { grid-template-columns: 1fr; }
+            .content-grid { flex-direction: column; }
+            .ticket-card { grid-template-columns: 1fr; text-align: center; }
+            .price-info { border-left: none; padding-left: 0; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER UTAMA -->
+<header>
+    <div class="logo-area">
+        <i class="fa-solid fa-compass"></i>
+        NusantaraFly
+    </div>
+    <nav>
+        <ul>
+            <li><a href="#">Pesawat</a></li>
+            <li><a href="#">Jadwal</a></li>
+            <li><a href="#">Tentang</a></li>
+        </ul>
+    </nav>
+    <button class="btn-top-cari">Cari penerbangan &rarr;</button>
+</header>
+
+<!-- HERO SECTION -->
+<div class="hero">
+    <div class="hero-content">
+        <div class="badge-temukan"><i class="fa-solid fa-plane-departure"></i> TEMUKAN PENERBANGANMU</div>
+        <h1>Temukan perjalanan <br><span>yang berarti.</span></h1>
+        <p>Cari penerbangan, bandingkan harga, dan temukan tujuan berikutnya dengan mudah.</p>
+        <div class="hero-features">
+            <span><i class="fa-solid fa-circle-check"></i> 10 Pilihan penerbangan</span>
+            <span><i class="fa-solid fa-circle-check"></i> Prioritas hasil pencarian akurat</span>
+        </div>
+    </div>
+    <div class="hero-illustration">
+        <div class="floating-badge badge-left"><i class="fa-solid fa-ticket"></i> Tiket pilihanmu</div>
+        <div class="floating-badge badge-right"><i class="fa-solid fa-location-dot"></i> Jelajahi Indonesia</div>
+        <div class="hero-plane-icon"><i class="fa-solid fa-plane"></i></div>
+    </div>
+</div>
+
+<!-- KOTAK PENCARIAN (SEARCH CONTAINER) -->
+<div class="search-container">
+    <div class="search-container-header">
+        <div>
+            <span class="sub-mulai">MULAI PENCARIAN</span>
+            <h3>Mau pergi ke mana?</h3>
+        </div>
+        <div class="badge-sesuai"><i class="fa-solid fa-magnifying-glass"></i> Prioritas pencarian ke atas</div>
+    </div>
+    
+    <div class="search-grid">
+        <div class="input-group">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <label>Tujuan atau maskapai</label>
+            <input type="text" id="searchInput" placeholder="Misalnya: Bali, Surabaya, Garuda">
+        </div>
+        <div class="input-group">
+            <i class="fa-solid fa-arrow-down-wide-short"></i>
+            <label>Urutkan harga</label>
+            <select id="sortSelect">
+                <option value="">Urutan awal</option>
+                <option value="asc">Harga Termurah</option>
+                <option value="desc">Harga Termahal</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <i class="fa-solid fa-calendar-days"></i>
+            <label>Tanggal keberangkatan</label>
+            <input type="text" value="14/11/2026" readonly>
+        </div>
+    </div>
+
+    <div class="search-action-row">
+        <button class="btn-main btn-reset" onclick="resetData()">Reset</button>
+        <button class="btn-main btn-cari" onclick="triggerSearch()">Cari tiket</button>
+    </div>
+</div>
+
+<!-- KONTEN UTAMA & TERMINAL LOG (STRUKTUR DATA) -->
+<div class="main-wrapper">
+    <div class="content-grid">
+        <!-- DAFTAR TIKET (KIRI) -->
+        <div class="ticket-list-section">
+            <div class="section-header">
+                <h2>Pilihan Penerbangan Tersedia</h2>
+                <span id="ticketCount" style="font-size:13px; color:var(--text-gray);">10 Tiket</span>
+            </div>
+            <div id="ticketList" class="card-container"></div>
+        </div>
+
+        <!-- LOG TERMINAL STRUKTUR DATA (KANAN) -->
+        <div class="log-section">
+            <div class="log-header">
+                <h3><i class="fa-solid fa-terminal"></i> Log Prioritas & Sorting C++</h3>
+                <button onclick="clearTimeline()" class="btn-clear-log">Clear</button>
+            </div>
+            <div class="timeline-list" id="timelineList">
+                <div class="timeline-item">
+                    <div class="timeline-title"><span>Sistem Inisialisasi</span><span class="timeline-time">READY</span></div>
+                    <div class="timeline-desc">10 Data Struct Tiket dimuat. Siap menjalankan sorting dan prioritas pencarian.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JAVASCRIPT GABUNGAN (10 TIKET & LOGIKA PRIORITAS PENCARIAN) -->
+<script>
+    // 1. STRUKTUR DATA STRUCT & POINTER (Logika C++)
+    function Tiket(id, maskapai, kode, asal, tujuan, jamPergi, jamTiba, harga, memoryAddress) {
+        this.id = id;
+        this.maskapai = maskapai;
+        this.kode = kode;
+        this.asal = asal;
+        this.tujuan = tujuan;
+        this.jamPergi = jamPergi;
+        this.jamTiba = jamTiba;
+        this.harga = harga;
+        this.pointerAddress = memoryAddress;
+    }
+
+    // 10 Data Awal Tiket Pesawat
+    const dataAwal = [
+        new Tiket("T1", "Garuda Indonesia", "GA", "JKT", "BALI", "08:00", "09:30", 1200000, "0x7FFF01"),
+        new Tiket("T2", "Lion Air",        "JT", "JKT", "SUB",  "10:00", "11:30", 650000,  "0x7FFF02"),
+        new Tiket("T3", "Citilink",        "QG", "JKT", "MEDAN","13:00", "14:30", 850000,  "0x7FFF03"),
+        new Tiket("T4", "AirAsia",         "AK", "BDG", "BALI", "07:00", "08:30", 520000,  "0x7FFF04"),
+        new Tiket("T5", "Batik Air",       "ID", "SUB", "MKS",  "16:00", "17:30", 950000,  "0x7FFF05"),
+        new Tiket("T6", "Sriwijaya Air",   "SJ", "JKT", "BALI", "11:00", "12:30", 720000,  "0x7FFF06"),
+        new Tiket("T7", "Super Air Jet",   "IU", "SUB", "YOG",  "09:00", "10:00", 400000,  "0x7FFF07"),
+        new Tiket("T8", "NAM Air",         "IN", "JKT", "BALI", "15:00", "16:30", 610000,  "0x7FFF08"),
+        new Tiket("T9", "Pelita Air",      "IP", "JKT", "SUB",  "12:00", "13:15", 700000,  "0x7FFF09"),
+        new Tiket("T10","Garuda Indonesia","GA", "SUB", "BALI", "17:00", "18:15", 1450000, "0x7FFF0A")
+    ];
+
+    let daftarTiket = [...dataAwal];
+    let isRunning = false;
+    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+    // Fungsi Render Kartu Tiket
+    function renderTickets(data, highlightStates = {}) {
+        const container = document.getElementById('ticketList');
+        container.innerHTML = '';
+        document.getElementById('ticketCount').innerText = `${data.length} Tiket`;
+
+        data.forEach((t, index) => {
+            const formattedHarga = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(t.harga);
+            let stateClass = highlightStates[index] ? `state-${highlightStates[index]}` : '';
+
+            container.innerHTML += `
+                <div class="ticket-card ${stateClass}">
+                    <div class="maskapai-info">
+                        <div class="maskapai-logo">${t.kode}</div>
+                        <div class="maskapai-name">${t.maskapai}</div>
+                    </div>
+                    <div class="route-info">
+                        <div class="time-block"><div class="time">${t.jamPergi}</div><div class="city">${t.asal}</div></div>
+                        <div class="route-path"><i class="fa-solid fa-plane"></i></div>
+                        <div class="time-block"><div class="time">${t.jamTiba}</div><div class="city">${t.tujuan}</div></div>
+                    </div>
+                    <div class="price-info">
+                        <div class="price">${formattedHarga}</div>
+                        <button class="btn-pilih">Pilih</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function addLog(title, desc, type = '') {
+        const list = document.getElementById('timelineList');
+        const item = document.createElement('div');
+        item.className = `timeline-item type-${type}`;
+        item.innerHTML = `
+            <div class="timeline-title"><span>${title}</span><span class="timeline-time">${new Date().toLocaleTimeString()}</span></div>
+            <div class="timeline-desc">${desc}</div>
+        `;
+        list.insertBefore(item, list.firstChild);
+    }
+
+    function clearTimeline() { document.getElementById('timelineList').innerHTML = ''; }
+
+    // FUNGSI UTAMA: Pencarian Berdasarkan Prioritas + Bubble Sort
+    async function triggerSearch() {
+        if (isRunning) return;
+        
+        const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+        const sortOrder = document.getElementById('sortSelect').value;
+
+        if (!keyword && !sortOrder) {
+            alert("Masukkan kata kunci pencarian (misal: Bali) atau pilih urutan harga terlebih dahulu!");
+            return;
+        }
+
+        isRunning = true;
+        clearTimeline();
+
+        let workingList = [...daftarTiket];
+
+        // 1. JALANKAN BUBBLE SORT BIASA TERLEBIH DAHULU (UNTUK MENUNJUKKAN TUGAS STRUCT/SORTING)
+        if (sortOrder) {
+            addLog("Bubble Sort C++ Dimulai", `Mengurutkan seluruh data struct (${sortOrder === 'asc' ? 'Termurah' : 'Termahal'})...`, "compare");
+
+            let n = workingList.length;
+            let swapCount = 0;
+
+            for (let i = 0; i < n - 1; i++) {
+                for (let j = 0; j < n - i - 1; j++) {
+                    let h = {}; h[j] = 'comparing'; h[j+1] = 'comparing';
+                    renderTickets(workingList, h);
+                    await sleep(200);
+
+                    let shouldSwap = sortOrder === 'asc' 
+                        ? (workingList[j].harga > workingList[j + 1].harga) 
+                        : (workingList[j].harga < workingList[j + 1].harga);
+
+                    if (shouldSwap) {
+                        let temp = workingList[j];
+                        workingList[j] = workingList[j + 1];
+                        workingList[j + 1] = temp;
+                        swapCount++;
+
+                        renderTickets(workingList, h);
+                        await sleep(200);
+                    }
+                }
+            }
+            addLog("Sorting Selesai", `Total penukaran (swap): ${swapCount}`, "match");
+        }
+
+        // 2. LOGIKA PRIORITAS PENCARIAN (MENAIKKAN HASIL SESUAI KATA KUNCI KE ATAS, LALU URUTKAN HARGINYA)
+        if (keyword) {
+            addLog("Search & Priority Sorting", `Memprioritaskan hasil pencarian "${keyword}" ke urutan teratas...`, "compare");
+
+            // Sort custom: Yang cocok dengan keyword ditaruh di atas (-1), lalu diurutkan lagi berdasarkan harga termurah/termahal di kelompoknya
+            workingList.sort((a, b) => {
+                let matchA = a.tujuan.toLowerCase().includes(keyword) || a.maskapai.toLowerCase().includes(keyword) || a.asal.toLowerCase().includes(keyword);
+                let matchB = b.tujuan.toLowerCase().includes(keyword) || b.maskapai.toLowerCase().includes(keyword) || b.asal.toLowerCase().includes(keyword);
+
+                if (matchA && !matchB) return -1; // A di atas B
+                if (!matchA && matchB) return 1;  // B di atas A
+
+                // Jika sama-sama cocok (atau sama-sama tidak cocok), urutkan berdasarkan harga termurah (Ascending)
+                return a.harga - b.harga;
+            });
+
+            // Visualisasi animasi penelusuran Linear Search / Matching
+            let matches = [];
+            for (let i = 0; i < workingList.length; i++) {
+                let t = workingList[i];
+                let h = {}; 
+                matches.forEach(idx => h[idx] = 'match'); 
+                h[i] = 'comparing';
+                
+                renderTickets(workingList, h);
+                
+                let isMatch = t.tujuan.toLowerCase().includes(keyword) || t.maskapai.toLowerCase().includes(keyword) || t.asal.toLowerCase().includes(keyword);
+                if (isMatch) {
+                    matches.push(i);
+                    h[i] = 'match';
+                    addLog(`Prioritas Ditemukan!`, `[Indeks ${i}] ${t.maskapai} (${t.tujuan}) - Rp ${t.harga.toLocaleString('id-ID')}`, "match");
+                } else {
+                    h[i] = 'mismatch';
+                }
+                await sleep(250);
+            }
+
+            let finalH = {}; matches.forEach(idx => finalH[idx] = 'match');
+            renderTickets(workingList, finalH);
+            addLog("Pencarian Selesai", `Hasil dengan kata kunci "${keyword}" berhasil ditaruh di baris teratas.`, "match");
+        } else {
+            renderTickets(workingList);
+        }
+
+        isRunning = false;
+    }
+
+    // Fungsi Reset Data Tiket ke Posisi Awal
+    function resetData() {
+        if (isRunning) return;
+        daftarTiket = [...dataAwal];
+        document.getElementById('searchInput').value = '';
+        document.getElementById('sortSelect').value = '';
+        clearTimeline();
+        renderTickets(daftarTiket);
+        addLog("Reset", "Data tiket dikembalikan ke urutan semula.", "idle");
+    }
+
+    // Render awal saat halaman dimuat
+    renderTickets(daftarTiket);
+</script>
+
+</body>
+</html>
